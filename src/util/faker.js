@@ -163,7 +163,7 @@ export const generateRandomValue = (string, user={}) => {
   if (type === "my_phone") value = user.phone;
   if (type === "my_first_name") value = user.first_name;
   if (type === "my_last_name") value = user.last_name;
-  if (type === "my_full_name") value = `${user.last_name} ${user.last_name}`;
+  if (type === "my_full_name") value = `${user.first_name} ${user.last_name}`;
   if (type === "my_anon_id") value = user.anonymousId;
   if (type === "my_user_id") value = user.user_id;
 
