@@ -214,7 +214,7 @@ const pickWeightedPosition = (chancesArr, position, target, cursor) => {
   }
 }
 
-export const createEventProps = (e, firedEvents) => {
+export const createEventProps = (e, firedEvents, user) => {
   // set recallNum for single value
   let recallNum = "0"
   let recallCell = "0"
@@ -247,14 +247,17 @@ export const createEventProps = (e, firedEvents) => {
     temp[0] = temp[0].trim();
     temp[1] = temp[1].trim();
 
-    // check for * recall
+    // Check for * recall
     if (temp[1].trim()[0] === "*" && (firedEvents[recallNum])) {
       if (firedEvents[recallNum][temp[0]] !== undefined) properties[temp[0]] = firedEvents[recallNum][temp[0]]; 
+      // Check for multiple property dependency inheritance
     } else if ((temp[1].trim()[0] === "{") && Array.isArray(recallCell)) {
       properties[temp[0]] = createMultipleProperty(temp[1], firedEvents, recallCell);
-    } else if (temp[1].trim()[0] === '#') {
-      properties[temp[0]] = generateRandomValue(temp[1]);
-      if (generateRandomValue(temp[1]) === "") toaster.warning(`Random value error on "${temp[1]}" - Invalid Phrase`, {id: 'single-toast'})
+      // Check if random value 
+    } else if (temp[1].trim()[0] === '#') { 
+      console.log("user", user);
+      properties[temp[0]] = generateRandomValue(temp[1], user);
+      if (generateRandomValue(temp[1]) === "", user) toaster.warning(`Random value error on "${temp[1]}" - Invalid Phrase`, {id: 'single-toast'})
     } else {
       if (temp[1].trim()[0] === "[") {
         // if pipes are used, split by pipes instead of commas

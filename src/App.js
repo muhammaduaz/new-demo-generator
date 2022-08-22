@@ -76,7 +76,7 @@ const launcher = async (
     if (checkDependency(eventList[e_i][dependencyElement], firedEvents) || e_i === firstEvent) {
       let timestampArr = createTimestamp(eventList[e_i], firedEvents); // Create timestamp Tuple
       let timestamp = timestampArr[0] // parse out timestamp used in event
-      let properties = createEventProps(eventList[e_i], firedEvents); // create event properties
+      let properties = createEventProps(eventList[e_i], firedEvents, userList[u_i]); // create event properties
       let contextObj = createEventContext(properties);  // create event context 
       let propertiesWithObjects = createObjectProperty(properties); // Handle nested objects 
       // If user is identified, set event property to true
