@@ -214,7 +214,7 @@ const pickWeightedPosition = (chancesArr, position, target, cursor) => {
   }
 }
 
-export const createEventProps = (e, firedEvents, user) => {
+export const createEventProps = (e, firedEvents, user, timestamp) => {
   // set recallNum for single value
   let recallNum = "0"
   let recallCell = "0"
@@ -255,8 +255,7 @@ export const createEventProps = (e, firedEvents, user) => {
       properties[temp[0]] = createMultipleProperty(temp[1], firedEvents, recallCell);
       // Check if random value 
     } else if (temp[1].trim()[0] === '#') { 
-      console.log("user", user);
-      properties[temp[0]] = generateRandomValue(temp[1], user);
+      properties[temp[0]] = generateRandomValue(temp[1], user, timestamp);
       if (generateRandomValue(temp[1]) === "", user) toaster.warning(`Random value error on "${temp[1]}" - Invalid Phrase`, {id: 'single-toast'})
     } else {
       if (temp[1].trim()[0] === "[") {

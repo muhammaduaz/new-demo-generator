@@ -73,8 +73,7 @@ const randomCurrencyFromInterval = (min, max) => { // min and max included
   return parseFloat((Math.random() * (parseFloat(max) - parseFloat(min)) + parseFloat(min)).toFixed(2));
 }
 
-export const generateRandomValue = (string, user={}) => {
-  console.log('user2', user);
+export const generateRandomValue = (string, user={}, timestamp) => {
   let value = "";
 
   if (!string.includes("#")) return string;
@@ -150,6 +149,12 @@ export const generateRandomValue = (string, user={}) => {
   // dates
   if (type === "date_past") value = faker.date.past();
   if (type === "date_recent") value = faker.date.recent();
+  if (type === "date_future") value = faker.date.soon();
+
+  if (type === "date_past") value = faker.date.past();
+  if (type === "date_recent") value = faker.date.recent();
+  if (type === "date_future_event") value = faker.date.soon(7, timestamp);
+
   if (type.includes("date_between") ) {
     if (string.split("#").length === 4) {
       let start = string.split("#")[2];
