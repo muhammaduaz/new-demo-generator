@@ -436,7 +436,7 @@ export const fireNodeEvents = async (fireProperties, eventList, e_i, userList, u
     if (!firedEvents['identify']) {
       delete payload.userId;
     }
-    payload.name = eventList[e_i][2] || payload.properties.name || payload.properties.title;
+    payload.name = eventList[e_i][2] || payload.properties.name || payload.properties.title || "Home"
 
     if (eventList[e_i][writeKeyElement].length === 32 && !eventList[e_i][writeKeyElement].includes(":")) {
       analyticsOptional.page({ ...payload, });
