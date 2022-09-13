@@ -192,8 +192,8 @@ const launcher = async (
     setUserCounter(userList.length-1- u_i);
     setIsLoading(false);
     isNode 
-    ? toaster.success("All events fired! ", {description: "Keep window open to allow node client to flush remaining events",id: 'single-toast'})
-    : toaster.success(`All events fired!`, {id: 'single-toast'})
+    ? toaster.success("All events fired! ", {description: "Keep window open to allow node client to flush remaining events",id: 'success-toast'})
+    : toaster.success(`All events fired!`, {id: 'success-toast'})
     
     analyticsSecondary.track({
       anonymousId: generateSessionId(),
@@ -276,11 +276,11 @@ const App = () => {
     if (userList.length > 0) { 
       setUserButtonStatus("Click to Save Changes")
       setUserList([])
-      toaster.success("User list has been reset", {id: 'reset-toast'})
+      toaster.success("User list has been reset", {id: 'success-toast'})
     } else {
       setUserButtonStatus("Click to Save Changes ") // The space is required, do not remove.
       setUserList(generateUsers(numOfUsers));
-      toaster.success("User list successfully generated", {description: "If you modify user properties, remember to hit save.",id: 'user-toast'})
+      toaster.success("User list successfully generated", {description: "If you modify user properties, remember to hit save.",id: 'success-toast'})
     }    
     return
   }
@@ -297,11 +297,11 @@ const App = () => {
     if (groupList.length > 0) { 
       setGroupButtonStatus("Click to Save Changes")
       setGroupList([])
-      toaster.success("Group list has been reset", {id: 'reset-toast'})
+      toaster.success("Group list has been reset", {id: 'success-toast'})
     } else {
       setGroupButtonStatus("Click to Save Changes ") // The space is required, do not remove.
       setGroupList(generateGroups(numOfGroups));
-      toaster.success("Group list successfully generated", {description: "If you modify group properties, remember to hit save.",id: 'user-toast'})
+      toaster.success("Group list successfully generated", {description: "If you modify group properties, remember to hit save.",id: 'success-toast'})
     }    
     return
   }
@@ -324,9 +324,9 @@ const App = () => {
       ? setUserButtonStatus("Click to Save Changes")
       : setUserButtonStatus("Click to Save Changes ")
       setUserList(temp);
-      toaster.success("Anonymous IDs have been regenerated", {description: "New anonymousId(s) have been saved", id: 'user-toast'})
+      toaster.success("Anonymous IDs have been regenerated", {description: "New anonymousId(s) have been saved", id: 'success-toast'})
     } else {
-      toaster.danger("No users entered", {description: "Click generate users or paste custom", id: 'user-toast'})
+      toaster.danger("No users entered", {description: "Click generate users or paste custom", id: 'error-toast'})
     }
   }
 
@@ -339,10 +339,10 @@ const App = () => {
     try {
       if (userList.length > 0) {
         setUserList(JSON.parse(e.target.userList.value));
-        toaster.success("User list has been saved", {id: 'user-toast'})
+        toaster.success("User list has been saved", {id: 'success-toast'})
         setUserButtonStatus("Click to Save Changes")
       } else {
-        toaster.danger("No users entered", {description: "Click generate users or paste custom", id: 'user-toast'})
+        toaster.danger("No users entered", {description: "Click generate users or paste custom", id: 'error-toast'})
       }
     }
     catch(e) {
@@ -363,14 +363,14 @@ const App = () => {
     try {
       if (groupList.length > 0) {
         setGroupList(JSON.parse(e.target.groupList.value));
-        toaster.success("Group List has been saved", {id: 'user-toast'})
+        toaster.success("Group List has been saved", {id: 'success-toast'})
         setGroupButtonStatus("Click to Save Changes")
       } else {
-        toaster.danger("No groups entered", {description: "Click generate groups or paste custom", id: 'user-toast'})
+        toaster.danger("No groups entered", {description: "Click generate groups or paste custom", id: 'error-toast'})
       }
     }
     catch(e) {
-      toaster.danger(e.message, {id: 'single-toast'});
+      toaster.danger(e.message, {id: 'error-toast'});
       analyticsSecondary.track({
         anonymousId: generateSessionId(),
         event: 'Group List Error',
@@ -497,7 +497,7 @@ const App = () => {
               Dispatch Events
             </Button> 
             :
-            <Button onClick={()=>toaster.warning(`Event Generator not ready`, {description: "Generate users or load CSV before firing", id: 'single-toast'}) } appearance='primary' size='large' isLoading={isLoading}>Dispatch Events</Button> 
+            <Button onClick={()=>toaster.warning(`Event Generator not ready`, {description: "Generate users or load CSV before firing", id: 'warning-toast'}) } appearance='primary' size='large' isLoading={isLoading}>Dispatch Events</Button> 
             }  
             </div>
             

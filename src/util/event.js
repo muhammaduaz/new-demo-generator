@@ -229,9 +229,7 @@ export const createEventProps = (e, firedEvents, user, timestamp) => {
   if (Array.isArray(recallCell)) recallNum = checkIsArrayAndHasEvent(recallCell, firedEvents)
 
   // remove non property/traits from array
-  // if (e[firstProp].length === 32 && !e[firstProp].includes(":")) firstProp++;
   let propsObject = e.slice(firstProp);
-
   propsObject = propsObject.filter(function(el) { return el; });
   const properties = {};
   var randomInt = 0;
@@ -244,8 +242,8 @@ export const createEventProps = (e, firedEvents, user, timestamp) => {
       shouldReuseIndex = true;
       temp[0] = temp[0].substring(1);
     }
-    temp[0] = temp[0].trim();
-    temp[1] = temp[1].trim();
+    temp[0] = temp[0].trim(); // property key
+    temp[1] = temp[1].trim(); // property value
 
     // Check for * recall
     if (temp[1].trim()[0] === "*" && (firedEvents[recallNum])) {
@@ -256,7 +254,7 @@ export const createEventProps = (e, firedEvents, user, timestamp) => {
       // Check if random value 
     } else if (temp[1].trim()[0] === '#') { 
       properties[temp[0]] = generateRandomValue(temp[1], user, timestamp);
-      if (generateRandomValue(temp[1]) === "", user) toaster.warning(`Random value error on "${temp[1]}" - Invalid Phrase`, {id: 'single-toast'})
+      if (temp[1] === "") toaster.warning(`Random value error on "${temp[0]}" - Invalid Phrase`, {id: 'warning-toast'})
     } else {
       if (temp[1].trim()[0] === "[") {
         // if pipes are used, split by pipes instead of commas
