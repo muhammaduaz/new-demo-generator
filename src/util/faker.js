@@ -1,5 +1,5 @@
 const faker = require('faker');
-import { toaster } from 'evergreen-ui'
+import { toaster } from 'evergreen-ui';
 
 const generatePhone = () => {
   let phone = faker.phone.phoneNumber();
@@ -15,12 +15,13 @@ export const generateUsers = (numOfUsers) => {
     let firstName = faker.name.firstName();
     let lastName = faker.name.lastName();
     let anonymousId = faker.datatype.uuid();
-    let user_id = faker.datatype.uuid().split('-')[0]
+    let user_id = faker.datatype.uuid().split('-')[0];
+    let unique_value = (Math.random() + 1).toString(36).substring(2);
     
     users.push({
         "first_name": firstName,
         "last_name": lastName,
-        "email": `${firstName}.${lastName}@gmailx.com`,
+        "email": `${firstName}.${lastName}.${unique_value}@gmailx.com`,
         "phone": generatePhone(),
         "anonymousId": anonymousId,
         "user_id": user_id
