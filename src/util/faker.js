@@ -17,6 +17,7 @@ export const generateUsers = (numOfUsers) => {
     let anonymousId = faker.datatype.uuid();
     let user_id = faker.datatype.uuid().split('-')[0];
     let unique_value = (Math.random() + 1).toString(36).substring(2);
+    let unique_value2 = (Math.random() + 1).toString(36).substring(2);
     
     users.push({
         "first_name": firstName,
@@ -24,7 +25,7 @@ export const generateUsers = (numOfUsers) => {
         "email": `${firstName}.${lastName}.${unique_value}@gmailx.com`,
         "phone": generatePhone(),
         "anonymousId": anonymousId,
-        "user_id": user_id
+        "user_id": `${user_id}${unique_value2}`
     });
   }
   return users 
