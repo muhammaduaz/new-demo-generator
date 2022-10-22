@@ -214,7 +214,7 @@ const pickWeightedPosition = (chancesArr, position, target, cursor) => {
   }
 }
 
-export const createEventProps = (e, firedEvents) => {
+export const createEventProps = (e, firedEvents, user, timestamp) => {
   // set recallNum for single value
   let recallNum = "0"
   let recallCell = "0"
@@ -229,9 +229,7 @@ export const createEventProps = (e, firedEvents) => {
   if (Array.isArray(recallCell)) recallNum = checkIsArrayAndHasEvent(recallCell, firedEvents)
 
   // remove non property/traits from array
-  // if (e[firstProp].length === 32 && !e[firstProp].includes(":")) firstProp++;
   let propsObject = e.slice(firstProp);
-
   propsObject = propsObject.filter(function(el) { return el; });
   const properties = {};
   var randomInt = 0;
@@ -244,17 +242,19 @@ export const createEventProps = (e, firedEvents) => {
       shouldReuseIndex = true;
       temp[0] = temp[0].substring(1);
     }
-    temp[0] = temp[0].trim();
-    temp[1] = temp[1].trim();
+    temp[0] = temp[0].trim(); // property key
+    temp[1] = temp[1].trim(); // property value
 
-    // check for * recall
+    // Check for * recall
     if (temp[1].trim()[0] === "*" && (firedEvents[recallNum])) {
       if (firedEvents[recallNum][temp[0]] !== undefined) properties[temp[0]] = firedEvents[recallNum][temp[0]]; 
+      // Check for multiple property dependency inheritance
     } else if ((temp[1].trim()[0] === "{") && Array.isArray(recallCell)) {
       properties[temp[0]] = createMultipleProperty(temp[1], firedEvents, recallCell);
-    } else if (temp[1].trim()[0] === '#') {
-      properties[temp[0]] = generateRandomValue(temp[1]);
-      if (generateRandomValue(temp[1]) === "") toaster.warning(`Random value error on "${temp[1]}" - Invalid Phrase`, {id: 'single-toast'})
+      // Check if random value 
+    } else if (temp[1].trim()[0] === '#') { 
+      properties[temp[0]] = generateRandomValue(temp[1], user, timestamp);
+      if (temp[1] === "") toaster.warning(`Random value error on "${temp[0]}" - Invalid Phrase`, {id: 'warning-toast'})
     } else {
       if (temp[1].trim()[0] === "[") {
         // if pipes are used, split by pipes instead of commas
@@ -433,7 +433,7 @@ export const fireNodeEvents = async (fireProperties, eventList, e_i, userList, u
     if (!firedEvents['identify']) {
       delete payload.userId;
     }
-    payload.name = eventList[e_i][2] || payload.properties.name || payload.properties.title;
+    payload.name = eventList[e_i][2] || payload.properties.name || payload.properties.title || "Home"
 
     if (eventList[e_i][writeKeyElement].length === 32 && !eventList[e_i][writeKeyElement].includes(":")) {
       analyticsOptional.page({ ...payload, });

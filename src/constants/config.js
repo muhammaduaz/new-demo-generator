@@ -6,13 +6,13 @@ export const dependencyElement = 3;
 export const dropoffElement = 4;
 export const dayElement = 5;
 export const randomizeElement = 6;
-export const version = "3.11";
+export const version = "3.20";
 export const writeKeyElement = 7;
 export const defaultEventTimeout = 4;
 export const usageTrackingWriteKey = 'CFb9iZw4bGVGg7os4tCsR3yToPHpx9Hr';
 export const nodeConfiguration = {
-  flushAt: 20,
-  flushInterval: 1000,
+  flushAt: 100,
+  flushInterval: 100,
   enable: true
 };
 

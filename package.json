@@ -1,10 +1,10 @@
 {
   "name": "new-demo-generator",
-  "type":"module",
-  "version": "3.11",
+  "type": "module",
+  "version": "3.20",
   "private": true,
   "engines": {
-    "node" : "^16.15.0"
+    "node": "^16.15.0"
   },
   "dependencies": {
     "@segment/analytics.js-core": "^4.1.11",
@@ -17,6 +17,7 @@
     "evergreen-ui": "^6.9.10",
     "faker": "^5.5.3",
     "fs": "^0.0.1-security",
+    "math": "^0.0.3",
     "moment": "^2.29.1",
     "papaparse": "^5.3.1",
     "react": "^17.0.2",

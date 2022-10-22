@@ -1,5 +1,12 @@
 const faker = require('faker');
-import { toaster } from 'evergreen-ui'
+import { toaster } from 'evergreen-ui';
+
+const generatePhone = () => {
+  let phone = faker.phone.phoneNumber();
+  phone = phone.replace(/\D/g, '');
+  phone = `${phone.substring(0,3)}-${phone.substring(3,6)}-${phone.substring(6,10)}`;
+  return phone;
+}
 
 export const generateUsers = (numOfUsers) => {
   let users = [];
@@ -8,14 +15,17 @@ export const generateUsers = (numOfUsers) => {
     let firstName = faker.name.firstName();
     let lastName = faker.name.lastName();
     let anonymousId = faker.datatype.uuid();
-    let user_id = faker.datatype.uuid().split('-')[0]
-
+    let user_id = faker.datatype.uuid().split('-')[0];
+    let unique_value = (Math.random() + 1).toString(36).substring(2);
+    let unique_value2 = (Math.random() + 1).toString(36).substring(2);
+    
     users.push({
         "first_name": firstName,
         "last_name": lastName,
-        "email": `${firstName}.${lastName}@gmailx.com`,
+        "email": `${firstName}.${lastName}.${unique_value}@gmailx.com`,
+        "phone": generatePhone(),
         "anonymousId": anonymousId,
-        "user_id": user_id
+        "user_id": `${user_id}${unique_value2}`
     });
   }
   return users 
@@ -35,9 +45,6 @@ export const generateGroups = (numOfGroups) => {
     let phone_number = generateRandomValue('#phone');
     let company_logo = faker.image.avatar();
     let company_description = faker.lorem.paragraph();
-
-    
-    
 
     groups.push({
       company_name : company_name,
@@ -65,10 +72,10 @@ const formatter = new Intl.NumberFormat('en-US', {
 });
 
 const randomCurrencyFromInterval = (min, max) => { // min and max included 
-  return parseFloat((Math.random() * (parseFloat(max) - parseFloat(min)) + parseFloat(min)).toFixed(2))
+  return parseFloat((Math.random() * (parseFloat(max) - parseFloat(min)) + parseFloat(min)).toFixed(2));
 }
 
-export const generateRandomValue = (string) => {
+export const generateRandomValue = (string, user={}, timestamp) => {
   let value = "";
 
   if (!string.includes("#")) return string;
@@ -81,7 +88,7 @@ export const generateRandomValue = (string) => {
   // Return short ID
   if (string.trim() == "#") {
     value = faker.datatype.uuid();
-    value = value.split("-")[0]
+    value = value.split("-")[0];
     return value;
   } 
   
@@ -89,7 +96,7 @@ export const generateRandomValue = (string) => {
   let type = string.split("#")[1];
   if (type === "id" || type === "short_id") {
     value = faker.datatype.uuid();
-    if (type === "short_id") value = value.split("-")[0]
+    if (type === "short_id") value = value.split("-")[0];
   }
   
   // Locations
@@ -116,9 +123,9 @@ export const generateRandomValue = (string) => {
     if (string.split("#").length === 4) {
       let min = string.split("#")[2];
       let max = string.split("#")[3];
-      value = randomCurrencyFromInterval(min, max)
+      value = randomCurrencyFromInterval(min, max);
     } else {
-      toaster.danger(`Random Value Error - price_between`, {id: 'error-toast'})
+      toaster.danger(`Random Value Error - price_between`, {id: 'error-toast'});
     }
   } 
   if (type === "int_between") {
@@ -127,7 +134,7 @@ export const generateRandomValue = (string) => {
       let max = Math.floor(string.split("#")[3]);
       value = Math.floor(Math.random() * (max - min + 1)) + min;
     } else {
-      toaster.danger(`Random Value Error - price_between`, {id: 'error-toast'})
+      toaster.danger(`Random Value Error - price_between`, {id: 'error-toast'});
     }
   } 
   if (type === "material") value = faker.commerce.material();
@@ -139,27 +146,36 @@ export const generateRandomValue = (string) => {
   if (type === "gender") value = faker.name.gender();
   if (type === "title") value = faker.name.title();
   if (type === "job_type") value = faker.name.jobType();
-  if (type === "phone") {
-    value = faker.phone.phoneNumber();
-    value = value.replace(/\D/g, '');
-    value = `${value.substring(0,3)}-${value.substring(3,6)}-${value.substring(6,10)}`
-  }
+  if (type === "phone") value = generatePhone();
 
   // dates
   if (type === "date_past") value = faker.date.past();
   if (type === "date_recent") value = faker.date.recent();
+  if (type === "date_future") value = faker.date.soon();
+
+  if (type === "date_past") value = faker.date.past();
+  if (type === "date_recent") value = faker.date.recent();
+  if (type === "date_future_event") value = faker.date.soon(7, timestamp);
+
   if (type.includes("date_between") ) {
     if (string.split("#").length === 4) {
       let start = string.split("#")[2];
       let end = string.split("#")[3];
       value = faker.date.between(start, end);
     } else {
-      toaster.danger(`Random Value Error - date_between`, {id: 'error-toast'})
+      toaster.danger(`Random Value Error - date_between`, {id: 'error-toast'});
     }
   }
+  if (type === "my_email") value = user.email;
+  if (type === "my_phone") value = user.phone;
+  if (type === "my_first_name") value = user.first_name;
+  if (type === "my_last_name") value = user.last_name;
+  if (type === "my_full_name") value = `${user.first_name} ${user.last_name}`;
+  if (type === "my_anon_id") value = user.anonymousId;
+  if (type === "my_user_id") value = user.user_id;
 
   if (value === "") {
-    return string
+    return string;
   }
   
   return value
